@@ -47,7 +47,8 @@ def get_imports(attr):
     direct = dict()
     for dep in proto_deps:
         for src in dep[ProtoInfo].check_deps_sources.to_list():
-            direct["{}={}".format(proto_path(src, dep[ProtoInfo]), attr.importpath)] = True
+            if not proto_path(src, dep[ProtoInfo]).startswith("google/protobuf/"):
+                direct["{}={}".format(proto_path(src, dep[ProtoInfo]), attr.importpath)] = True
 
     deps = getattr(attr, "deps", []) + getattr(attr, "embed", [])
     transitive = [
